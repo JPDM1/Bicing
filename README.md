@@ -1,1 +1,2 @@
 ## BICING 
+![Diseño preliminar](
