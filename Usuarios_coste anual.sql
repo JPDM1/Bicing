@@ -2,14 +2,18 @@
 USE bicing;
 DROP PROCEDURE IF EXISTS clientes;
 DELIMITER //
-CREATE PROCEDURE clientes(IN cod_user VARCHAR(10),
+CREATE PROCEDURE clientes(IN cod_user VARCHAR(10),-- código inscrito a mano
                           IN dni CHAR(9),
                           IN nombre VARCHAR(45),
                           IN apellidos VARCHAR(45),
                           IN dir VARCHAR(45),
-                          IN cta_cte VARCHAR(15))
+                          IN cta_cte VARCHAR(15))-- número cuenta corriente
 BEGIN
-INSERT INTO USUARIOS VALUES(cod_user,NOW(),dni,nombre,apellidos,dir,cta_cte);
+IF dni IN (SELECT DNI FROM clientes) THEN
+   SELECT "No es cliente nuevo" AS "Mensaje";
+ELSE
+   INSERT INTO USUARIOS VALUES(cod_user,NOW(),dni,nombre,apellidos,dir,cta_cte);
+END IF;
 END
 // DELIMITER ;
 --  --- FACTURACIÓN ANUAL ----
