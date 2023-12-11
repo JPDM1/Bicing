@@ -68,11 +68,6 @@ CREATE TABLE IF NOT EXISTS `Bicing`.`FACTURACION_ANUAL` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_FACTURACION_USUARIOS_idx` ON `Bicing`.`FACTURACION_ANUAL` (`Codigo_usuario` ASC) VISIBLE;
-
-CREATE INDEX `fk_FACTURACIÓN_Tarifa-fija1_idx` ON `Bicing`.`FACTURACION_ANUAL` (`Id_tarifa_fija` ASC) VISIBLE;
-
-
 -- -----------------------------------------------------
 -- Table `Bicing`.`Tipo_bicicleta`
 -- -----------------------------------------------------
@@ -86,6 +81,26 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Bicing`.`BICICLETAS`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `Bicing`.`BICICLETAS` ;
+
+CREATE TABLE IF NOT EXISTS `Bicing`.`BICICLETAS` (
+  `Id` CHAR(3) NOT NULL,
+  `Año` YEAR NULL,
+  `Id_tipo_bicicleta` CHAR(3) NOT NULL,
+  `Operativa` TINYINT NULL,
+  `Codigo_estacion` CHAR(3) NULL,
+  `En_uso` TINYINT NULL,
+  PRIMARY KEY (`Id`),
+  CONSTRAINT `fk_BICICLETA_tipo_bicicleta1`
+    FOREIGN KEY (`Id_tipo_bicicleta`)
+    REFERENCES `Bicing`.`Tipo_bicicleta` (`Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `Bicing`.`ESTACIONES`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `Bicing`.`ESTACIONES` ;
@@ -97,36 +112,6 @@ CREATE TABLE IF NOT EXISTS `Bicing`.`ESTACIONES` (
   `Capacidad` INT NULL,
   PRIMARY KEY (`Codigo_estacion`))
 ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Bicing`.`BICICLETAS`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `Bicing`.`BICICLETAS` ;
-
-CREATE TABLE IF NOT EXISTS `Bicing`.`BICICLETAS` (
-  `Id` CHAR(3) NOT NULL,
-  `Año` YEAR NULL,
-  `Id_tipo_bicicleta` CHAR(3) NOT NULL,
-  `Operativa` TINYINT NULL,
-  `Codigo_estacion` CHAR(3) NOT NULL,
-  `En_uso` TINYINT NULL,
-  PRIMARY KEY (`Id`),
-  CONSTRAINT `fk_BICICLETA_tipo_bicicleta1`
-    FOREIGN KEY (`Id_tipo_bicicleta`)
-    REFERENCES `Bicing`.`Tipo_bicicleta` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_BICICLETAS_ESTACIONES1`
-    FOREIGN KEY (`Codigo_estacion`)
-    REFERENCES `Bicing`.`ESTACIONES` (`Codigo_estacion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-CREATE INDEX `fk_BICICLETA_tipo_bicicleta1_idx` ON `Bicing`.`BICICLETAS` (`Id_tipo_bicicleta` ASC) VISIBLE;
-
-CREATE INDEX `fk_BICICLETAS_ESTACIONES1_idx` ON `Bicing`.`BICICLETAS` (`Codigo_estacion` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
@@ -153,11 +138,6 @@ CREATE TABLE IF NOT EXISTS `Bicing`.`MANTENIMIENTO` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_MANTENIMIENTO_BICICLETA1_idx` ON `Bicing`.`MANTENIMIENTO` (`Id_bicicleta` ASC) VISIBLE;
-
-CREATE INDEX `fk_MANTENIMIENTO_ESTACIONES1_idx` ON `Bicing`.`MANTENIMIENTO` (`Codigo_estacion_recogida` ASC) VISIBLE;
-
 
 -- -----------------------------------------------------
 -- Table `Bicing`.`DESPLAZAMIENTOS`
@@ -196,15 +176,6 @@ CREATE TABLE IF NOT EXISTS `Bicing`.`DESPLAZAMIENTOS` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_ALQUILER_ESTACIONES2_idx` ON `Bicing`.`DESPLAZAMIENTOS` (`Cod_estacion_ inicio` ASC) VISIBLE;
-
-CREATE INDEX `fk_ALQUILER_BICICLETA1_idx` ON `Bicing`.`DESPLAZAMIENTOS` (`Id_bicicleta` ASC) VISIBLE;
-
-CREATE INDEX `fk_HISTORIAL_SERVICIO_USUARIOS1_idx` ON `Bicing`.`DESPLAZAMIENTOS` (`Codigo_usuario` ASC) VISIBLE;
-
-CREATE INDEX `fk_VIAJES_ESTACIONES1_idx` ON `Bicing`.`DESPLAZAMIENTOS` (`Cod_estacion_final` ASC) VISIBLE;
-
 
 -- -----------------------------------------------------
 -- Table `Bicing`.`Oferta_tiempo`
@@ -246,13 +217,6 @@ CREATE TABLE IF NOT EXISTS `Bicing`.`Tarifa_variable` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_tipo_bicicleta_has_uso_variable_uso_variable1_idx` ON `Bicing`.`Tarifa_variable` (`Id_uso_variable` ASC) VISIBLE;
-
-CREATE INDEX `fk_tarifa-variable_tipo_bicicleta1_idx` ON `Bicing`.`Tarifa_variable` (`Id_tipo_bicicleta` ASC) VISIBLE;
-
-CREATE INDEX `fk_tarifa-variable_Tarifa-fija1_idx` ON `Bicing`.`Tarifa_variable` (`Id_tarifa_fija` ASC) VISIBLE;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -306,6 +270,27 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `Bicing`.`BICICLETAS`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `Bicing`;
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i1', 2020, 'tb2', 1, NULL, 1);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i2', 2015, 'tb1', 0, 'E1', 0);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i3', 2022, 'tb2', 1, 'E2', 0);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i4', 2020, 'tb1', 1, 'E3', 0);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i5', 2022, 'tb2', 0, NULL, 1);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i6', 2010, 'tb1', 1, 'E4', 0);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i7', 2023, 'tb2', 1, 'E5', 0);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i8', 2020, 'tb1', 1, NULL, 1);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i9', 2010, 'tb2', 1, NULL, 1);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i10', 2019, 'tb1', 0, NULL, NULL);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i11', 2018, 'tb2', 0, NULL, NULL);
+INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i13', 2020, 'tb1', 0, NULL, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `Bicing`.`ESTACIONES`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -319,25 +304,6 @@ INSERT INTO `Bicing`.`ESTACIONES` (`Codigo_estacion`, `Nombre`, `Direccion`, `Ca
 INSERT INTO `Bicing`.`ESTACIONES` (`Codigo_estacion`, `Nombre`, `Direccion`, `Capacidad`) VALUES ('E7', 'Poble Nou', 'Calle Tamarit 101', 28);
 INSERT INTO `Bicing`.`ESTACIONES` (`Codigo_estacion`, `Nombre`, `Direccion`, `Capacidad`) VALUES ('E8', 'L\' Eixample de L\'Esquerra', 'Av. Diagonal 584', 45);
 INSERT INTO `Bicing`.`ESTACIONES` (`Codigo_estacion`, `Nombre`, `Direccion`, `Capacidad`) VALUES ('E9', 'El Clot', 'Calle Bilbao 187', 23);
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `Bicing`.`BICICLETAS`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `Bicing`;
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i1', 2020, 'tb2', 1, DEFAULT, 1);
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i2', 2015, 'tb1', 0, DEFAULT, );
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i3', 2022, 'tb2', 1, DEFAULT, );
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i4', 2020, 'tb1', 1, DEFAULT, );
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i5', 2022, 'tb2', 0, DEFAULT, NULL);
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i6', 2010, 'tb1', 1, DEFAULT, );
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i7', 2023, 'tb2', 1, DEFAULT, );
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i8', 2020, 'tb1', 1, DEFAULT, 1);
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i9', 2010, 'tb2', 1, DEFAULT, NULL);
-INSERT INTO `Bicing`.`BICICLETAS` (`Id`, `Año`, `Id_tipo_bicicleta`, `Operativa`, `Codigo_estacion`, `En_uso`) VALUES ('i10', 2019, 'tb1', 0, DEFAULT, NULL);
 
 COMMIT;
 

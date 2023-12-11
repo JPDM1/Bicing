@@ -13,7 +13,7 @@ DROP TRIGGER IF EXISTS bic_est;
 DELIMITER //
 CREATE TRIGGER bic_est BEFORE UPDATE ON DESPLAZAMIENTOS FOR EACH ROW
 BEGIN
-UPDATE BICICLETAS SET Operativa = 1, Codigo_estacion = NEW.Cod_estacion_final, En_uso=0 WHERE Id=NEW.Id_bicicleta;
+UPDATE BICICLETAS SET Codigo_estacion = NEW.Cod_estacion_final, En_uso=0 WHERE Id=NEW.Id_bicicleta;
 END
 // DELIMITER ;
 -- --- ACTUALIZACIÓN PARA DECLARAR QUE LA BICICLETA NO ESTÁ EN SERVICIO ----
@@ -25,14 +25,14 @@ BEGIN
 UPDATE BICICLETAS SET Operativa =0,Codigo_estacion=NULL,En_uso=NULL WHERE Id=NEW.Id_bicicleta;
 END
 // DELIMITER ;
--- --- ACTUALIZACIÓN DE LA BICICLETA QUE ESTÁ NUEVAMENTE OPERATIVA
+-- --- ACTUALIZACIÓN DE LA BICICLETA QUE ESTÁ NUEVAMENTE OPERATIVA ----
+-- la bicicleta una vez reparada vuelve a la estación donde fue encontrada estropeada.
 USE bicing;
 DROP TRIGGER IF EXISTS bic_operativa;
 DELIMITER //
 CREATE TRIGGER bic_operativa BEFORE UPDATE ON MANTENIMIENTO FOR EACH ROW
 BEGIN
 UPDATE BICICLETAS SET Operativa =1, Codigo_estacion= OLD.Codigo_estacion_recogida,En_uso=0 WHERE Id= NEW.Id_bicicleta;
--- la bicicleta una vez reparada vuelve a la estación donde fue encontrada estropeada.
 END
 // DELIMITER ;
 
