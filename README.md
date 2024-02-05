@@ -1,4 +1,4 @@
 ## bicing
-Diseño académico simplificado hecho en `SQL`.
+Diseño académico simplificado de la base de datos en SQL.
 
 ![](https://github.com/JPDM1/Bicing/blob/main/Resumen.png)
