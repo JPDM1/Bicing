@@ -1,4 +1,4 @@
 ## Bicing
-- [x] ***Diseño académico simplificado de la base de datos en MySQL*** :+1:
+- [x] ***Diseño académico simplificado de su base de datos en SQL*** :+1:
 
 ![](https://github.com/JPDM1/Bicing/blob/main/Resumen.png)
